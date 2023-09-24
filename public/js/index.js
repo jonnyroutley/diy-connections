@@ -4,13 +4,13 @@ function createPuzzle(e) {
   e.preventDefault();
 
   const form = document.getElementById("create-form");
-    var formData = new FormData(form);
-    
+  var formData = new FormData(form);
+
   var data = encodePuzzle(formData);
 
   const playLink = document.getElementById("play-link");
-    playLink.href = "?p=" + data;
-    playLink.classList.toggle("hide");
+  playLink.href = "?p=" + data;
+  playLink.classList.toggle("hide");
 
   navigator.clipboard.writeText(
     window.location.origin + window.location.pathname + "?p=" + data
@@ -25,8 +25,8 @@ window.onload = () => {
   const urlParams = new URLSearchParams(queryString);
 
   const puzzleDataEncoded = urlParams.get("p");
-    if (puzzleDataEncoded) {
-        puzzleData = decodePuzzle(puzzleDataEncoded);
+  if (puzzleDataEncoded) {
+    puzzleData = decodePuzzle(puzzleDataEncoded);
     createPlayButtons(puzzleData);
   }
 
@@ -34,9 +34,9 @@ window.onload = () => {
 
   const submitButton = document.getElementById("submit-button");
   submitButton.addEventListener("click", submitGuess);
-  
-  const deselectButton = document.getElementById("deselect-button")
-  deselectButton.addEventListener("click", deselectAll)
+
+  const deselectButton = document.getElementById("deselect-button");
+  deselectButton.addEventListener("click", deselectAll);
 };
 
 function setPage(isCreating) {
@@ -79,7 +79,6 @@ function decodePuzzle(data) {
 function createPlayButtons(puzzleDataDecoded) {
   const playDiv = document.getElementById("play");
 
-
   const words = puzzleDataDecoded.flatMap((connection) => connection.words);
   shuffle(words);
 
@@ -94,19 +93,19 @@ function createPlayButtons(puzzleDataDecoded) {
 }
 
 function toggleWord(event) {
-    const clicked = event.target;
-    const selectedButtons = Array.from(
-      document.getElementsByClassName("selected")
-    );
-    const alreadySelected = selectedButtons.some((element) =>
-      element.isEqualNode(clicked)
-    );
+  const clicked = event.target;
+  const selectedButtons = Array.from(
+    document.getElementsByClassName("selected")
+  );
+  const alreadySelected = selectedButtons.some((element) =>
+    element.isEqualNode(clicked)
+  );
 
-    if (!alreadySelected && selectedButtons.length >= 4) {
-      return;
-    }
+  if (!alreadySelected && selectedButtons.length >= 4) {
+    return;
+  }
 
-    clicked.classList.toggle("selected");
+  clicked.classList.toggle("selected");
 }
 
 function shuffle(array) {
@@ -130,27 +129,54 @@ function shuffle(array) {
 }
 
 function submitGuess() {
+  const selectedElements = Array.from(
+    document.getElementsByClassName("selected")
+  );
+  const selectedWords = selectedElements.map((el) => el.textContent);
 
-    const selectedElements = Array.from(document.getElementsByClassName("selected"));
-    const selectedWords = selectedElements.map(el => el.textContent);
+  const connection = isGuessCorrect(selectedWords, puzzleData);
+  if (connection) {
+    const connectionNumber = puzzleData.indexOf(connection) + 1;
 
-    const connection = isGuessCorrect(selectedWords, puzzleData);
-    if (connection) {
-        const connectionNumber = puzzleData.indexOf(connection) + 1;
-
-        console.log("Correct: The connection is " + connection.category);
-        selectedElements.forEach(element => {
-            element.removeEventListener("click", toggleWord);
-            element.classList.remove("selected");
-            element.classList.add(`category${connectionNumber}-found`);
-        });
-
-    } else {
-        console.log("Incorrect Guess");
-        deselectAll();
-    }
-    
+    console.log("Correct: The connection is " + connection.category);
+    makeConnection(connection, selectedElements)
+  } else {
+    console.log("Incorrect Guess");
+    deselectAll();
+  }
 }
+
+function makeConnection(connection, selectedElements) {
+  playDiv = document.getElementById("play");
+  answerContainer = document.getElementById("answers-container");
+
+  console.log("Correct: The connection is " + connection.category);
+  selectedElements.forEach((element) => {
+    playDiv.removeChild(element);
+  });
+
+  answerContainer.appendChild(createAnswer(connection));
+}
+
+function createAnswer(connection) {
+  const connectionNumber = puzzleData.indexOf(connection) + 1;
+  const answerDiv = document.createElement("div");
+  answerDiv.classList.add("answer-box");
+  answerDiv.classList.add(`category${connectionNumber}-found`)
+
+  const categoryDiv = document.createElement("div");
+  categoryDiv.classList.add("answer-category");
+  categoryDiv.textContent = connection.category;
+  answerDiv.appendChild(categoryDiv);
+
+  const wordsDiv = document.createElement("div");
+  wordsDiv.classList.add("answer-words");
+  wordsDiv.textContent = connection.words.join(", ");
+  answerDiv.appendChild(wordsDiv);
+
+  return answerDiv;
+}
+
 
 // guess is an array of 4 guesses
 // puzzle data is the decoded puzzle data above
@@ -164,8 +190,9 @@ function isGuessCorrect(guess, puzzleData) {
   return matchingConnection;
 }
 
-
 function deselectAll() {
-  const selected = Array.from(document.getElementsByClassName("selected"))
-  selected.forEach((button) => {button.classList.toggle("selected")})
+  const selected = Array.from(document.getElementsByClassName("selected"));
+  selected.forEach((button) => {
+    button.classList.toggle("selected");
+  });
 }

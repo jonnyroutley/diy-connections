@@ -1,0 +1,170 @@
+:root {
+  --category1-colour: #f9df6d;
+  --category2-colour: #a0c35a;
+  --category3-colour: #b0c4ef;
+  --category4-colour: #ba81c5;
+}
+
+body {
+  /* background-color: #dddddd; */
+  font-family: "Arial Narrow Bold", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+}
+
+#main {
+  width: 100%;
+  max-width: 600px;
+  background-color: white;
+  /* display: flex; */
+  /* flex-direction: column; */
+  padding: 20px 30px;
+  margin: 0 auto;
+  margin-bottom: 50px;
+  height: auto;
+}
+
+#create {
+  display: flex;
+  flex-direction: column;
+}
+
+#create-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: left;
+}
+
+.category {
+  width: 332px;
+  padding: 8px;
+}
+
+.answer {
+  margin-left: 32px;
+  width: 300px;
+  padding: 8px;
+}
+
+#create-button {
+  width: 10em;
+  height: 3.5em;
+  margin-left: 32px;
+}
+
+#play {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  text-align: center;
+}
+
+.option-button {
+  padding: 15px 20px;
+  width: 100px;
+  height: 50px;
+  font-size: large;
+  border-radius: 0.5em;
+  display: block;
+  background-color: #efefe6;
+  font-weight: bold;
+  text-transform: uppercase;
+  line-height: 50px;
+}
+
+.option-button:hover {
+  /* background-color: #a4a4a4; */
+  cursor: pointer;
+}
+
+.hide {
+  display: none;
+}
+
+.selected {
+  background-color: #5a594e;
+  color: white;
+}
+
+#play-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  text-align: center;
+}
+
+#play-button-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  text-align: center;
+}
+
+#deselect-button {
+  border-radius: 20px;
+  background-color: white;
+  height: 60px;
+  padding: 15px;
+  font-weight: bold;
+  border: 1px solid black;
+}
+
+#deselect-button:active {
+  background-color: #c5c5c5;
+}
+
+#deselect-button:hover {
+  cursor: pointer;
+}
+
+#submit-button {
+  background-color: white;
+  border-radius: 20px;
+  height: 60px;
+  padding: 15px;
+  font-weight: bold;
+  border: 1px solid black;
+}
+
+#submit-button:active {
+  background-color: #c5c5c5;
+}
+
+#submit-button:hover {
+  cursor: pointer;
+}
+
+.category1-found {
+    background-color: var(--category1-colour);
+    cursor: default;
+}
+
+.category2-found {
+    background-color: var(--category2-colour);
+    cursor: default;
+}
+
+.category3-found {
+    background-color: var(--category3-colour);
+    cursor: default;
+}
+
+.category4-found {
+    background-color: var(--category4-colour);
+    cursor: default;
+}
